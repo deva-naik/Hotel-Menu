@@ -1,0 +1,105 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class MenuItem {
+    private String name;
+    private double price;
+    private String description;
+
+    public MenuItem(String name, double price, String description) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    @Override
+    public String toString() {
+        return name + " ($" + price + "): " + description;
+    }
+}
+
+class Menu {
+    private List<MenuItem> items;
+
+    public Menu() {
+        items = new ArrayList<>();
+    }
+
+    public void addItem(MenuItem item) {
+        items.add(item);
+    }
+
+    public void printMenu() {
+        for (MenuItem item : items) {
+            System.out.println(item);
+        }
+    }
+
+    public MenuItem getItemByName(String name) {
+        for (MenuItem item : items) {
+            if (item.getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+}
+
+public class HotelMenuCard {
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+
+        menu.addItem(new MenuItem("Burger", 5.99, "Delicious beef burger with lettuce and tomato"));
+        menu.addItem(new MenuItem("Pizza", 8.99, "Cheese pizza with a crispy crust"));
+        menu.addItem(new MenuItem("Salad", 4.99, "Fresh garden salad with your choice of dressing"));
+
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\nHotel Menu");
+            System.out.println("1. View Menu");
+            System.out.println("2. Get Item by Name");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    menu.printMenu();
+                    break;
+                case 2:
+                    System.out.print("Enter the name of the item: ");
+                    String name = scanner.nextLine();
+                    MenuItem item = menu.getItemByName(name);
+                    if (item != null) {
+                        System.out.println(item);
+                    } else {
+                        System.out.println("Item not found.");
+                    }
+                    break;
+                case 3:
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+}
